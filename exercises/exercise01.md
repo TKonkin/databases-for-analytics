@@ -1,6 +1,6 @@
 # Exercise 01: World Database SQL Practice
 
-- Name:
+- Name: Terry Konkin
 - Course: Database for Analytics
 - Module: 1
 - Database Used: World Database
@@ -27,7 +27,7 @@
 Why were these data types selected?
 
 ### Answer
-_Write your explanation here._
+_Population type int was selected because it generates a whole number, which is logical for a count. LifeExpectancy type decimal was selected because it is based on a calculation which may not always result in a whole number._
 
 ### Screenshot
 _Show the table structure or DESCRIBE output._
@@ -46,7 +46,7 @@ DESCRIBE country;
 Why do you think this data type was selected?
 
 ### Answer
-_Write your explanation here._
+_Data type of smallint was selected because the field will always be a number less than the present year 2026._
 
 ### Screenshot
 
@@ -64,7 +64,7 @@ DESCRIBE country;
 Explain why your proposed data type might be better in some situations.
 
 ### Answer
-_Write your explanation here._
+_Apparently MySQL has a type YEAR - so this would be more suitable because it uses less space than smallint, and also has year format.
 
 ---
 
@@ -146,9 +146,17 @@ Write a SQL command to **update the city named `"Nashville-Davidson"` to `"Nashv
 ### SQL
 
 ```sql
+SELECT ID, Name FROM city
+WHERE Name = 'Nashville'
+OR Name = 'Nashville-Davidson';
+
+
 UPDATE city
 SET Name = 'Nashville'
-WHERE Name = 'Nashville-Davidson';
+WHERE ID = '3814';
+
+SELECT ID, Name FROM city
+WHERE ID = '3814'
 ```
 
 ### Screenshot
