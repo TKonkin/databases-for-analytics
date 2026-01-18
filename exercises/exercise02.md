@@ -1,6 +1,6 @@
 # Exercise 02: World Database – Joins, Grouping, and Data Quality
 
-- Name:
+- Name: Terry Konkin
 - Course: Database for Analytics
 - Module: 2
 - Database Used: World Database (PostgreSQL)
@@ -23,13 +23,13 @@
 When importing records from `worldPGSQL.sql`, **how many cities were imported**?
 
 ### Answer
-_Write the number of cities imported._
+_4001_
 
 ### Screenshot
 _Show evidence of how you determined this (for example, a COUNT query)._
 
 ```sql
--- Your SQL here
+SELECT COUNT(DISTINCT name) FROM city;
 ```
 
 ![Q1 Screenshot](screenshots/q1_city_count.png)
@@ -43,7 +43,12 @@ Using the World database, write the SQL command to **display each country name a
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT country.name AS country,
+       countrylanguage.language AS language
+FROM country
+JOIN countrylanguage
+      ON country.code = countrylanguage.countrycode
+ORDER BY country.name, countrylanguage.language;
 ```
 
 ### Screenshot
@@ -59,7 +64,13 @@ Using the World database, write the SQL command to **display each country name a
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT country.name AS country,
+       countrylanguage.language AS officiallanguage
+FROM country
+JOIN countrylanguage
+      ON country.code = countrylanguage.countrycode
+WHERE countrylanguage.isofficial = 'T'
+ORDER BY country.name, countrylanguage.language;
 ```
 
 ### Screenshot
@@ -88,7 +99,11 @@ ON country.code = countrylanguage.countrycode;
 **In your own words**, describe what data the **second query returns that the first query does not**.
 
 ### Answer
-_Write your explanation here._
+_The first statement returns only those rows where there is a matching countrycode in both the country and countrylanguage tables.
+
+As a left outer join, the second statement returns all rows from the left (in this case, country) table, and matching rows from the right (countrylanguage) table.
+
+Therefore, the additional info in the second query is those rows from country that do not have a matching code in countrylanguage.
 
 ---
 
@@ -100,12 +115,13 @@ Do **not** repeat any form of government more than once.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT DISTINCT governmentform
+FROM country;
 ```
 
 ### Screenshot
 
-![Q5 Screenshot](screenshots/q5_government_forms.png)
+![Q5 Screenshot](screenshots/q5b_government_forms.png)
 
 ---
 
@@ -117,7 +133,11 @@ Label the column **"City or Country Name"**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT name AS "City or Country Name"
+FROM city
+UNION
+SELECT name AS "City or Country Name"
+FROM country;
 ```
 
 ### Screenshot
@@ -134,7 +154,13 @@ Be sure to **sort by country name**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT country.name AS countryname,
+       COUNT(countrylanguage.language) AS numberoflanguages
+FROM country
+LEFT JOIN countrylanguage
+       ON country.code = countrylanguage.countrycode
+GROUP BY country.name
+ORDER BY country.name;
 ```
 
 ### Screenshot
@@ -151,7 +177,11 @@ Be sure to **sort by language name**.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT countrylanguage.Language,
+       COUNT(DISTINCT countrylanguage.countrycode) AS numberofcountries
+FROM countrylanguage
+GROUP BY countrylanguage.language
+ORDER BY countrylanguage.language;
 ```
 
 ### Screenshot
@@ -169,7 +199,15 @@ Using the World database, write the SQL command to **list countries that have mo
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT country.name AS country,
+       COUNT(*) AS numberofofficiallanguages
+FROM country
+JOIN countrylanguage
+      ON country.code = countrylanguage.countrycode
+WHERE countrylanguage.isofficial = 'T'
+GROUP BY country.name
+HAVING COUNT(*) > 2
+ORDER BY country.name;
 ```
 
 ### Screenshot
