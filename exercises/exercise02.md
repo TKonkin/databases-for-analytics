@@ -220,12 +220,16 @@ ORDER BY country.name;
 
 Using the World database, write the SQL command to **find cities where the district value is missing**.
 
-*Hint: Use `LIKE` and the dash (`-`) since some rows use that instead of actual data.*
+*Hint: Use `LIKE` and the dash (`-') since some rows use that instead of actual data.*
 
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT Name, District
+FROM city
+WHERE District IS NULL
+	OR District LIKE '–'
+	OR TRIM(TRANSLATE(District, '–', '')) = '';
 ```
 
 ### Screenshot
@@ -243,7 +247,16 @@ Using the World database, write the SQL command to **calculate the percentage of
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    (COUNT(CASE 
+              WHEN District IS NULL 
+                OR TRIM(TRANSLATE(District, '–', '')) = ''
+                OR District = '–' 
+           THEN 1 
+          END) * 100.0 
+     / COUNT(*)
+    ) AS PercentageMissingDistrict
+FROM city;
 ```
 
 ### Screenshot
