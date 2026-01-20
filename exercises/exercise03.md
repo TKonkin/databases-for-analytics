@@ -1,6 +1,6 @@
 # Exercise 03: MongoDB – Document Queries and Analysis
 
-- Name:
+- Name: Terry Konkin
 - Course: Database for Analytics
 - Module: 3
 - Database Used: MongoDB
@@ -24,13 +24,13 @@
 When importing the documents from `restaurants-json.json`, **how many documents were imported into your collection**?
 
 ### Answer
-_Write the number of documents imported._
+_25358_
 
 ### Screenshot
 _Show evidence of how you determined this (for example, a count query)._
 
 ```javascript
-// Your MongoDB command here
+When viewing the file, the number of documents is displayed at the right side of the tool bar.
 ```
 
 ![Q1 Screenshot](screenshots/q1_document_count.png)
@@ -44,7 +44,7 @@ Before writing queries on the data, **what command do you use to set the MongoDB
 ### MongoDB Command
 
 ```javascript
-// Your MongoDB command here
+use 44661
 ```
 
 ### Screenshot
@@ -60,7 +60,7 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+db["restaurants"].find({ borough: "Queens" })
 ```
 
 ### Screenshot
@@ -76,8 +76,9 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+{"borough": "Queens"}
 ```
+Count appears in tool bar = 5656
 
 ### Screenshot
 
@@ -92,8 +93,9 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+{"borough": "Queens", "cuisine": "Hamburgers"}
 ```
+Count appears in toolbar = 104
 
 ### Screenshot
 
@@ -110,8 +112,9 @@ Using your `restaurants` collection in the `44661` database, write the MongoDB q
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+{ "address.zipcode": "10460" }
 ```
+Count appears in toolbar = 68
 
 ### Screenshot
 
@@ -139,7 +142,8 @@ Your output should resemble:
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+In filter bar { "address.zipcode": "10460" }
+In Project bar { "name": 1, "_id": 0 }
 ```
 
 ### Screenshot
@@ -159,7 +163,8 @@ Your results should include:
 ### MongoDB Query
 
 ```javascript
-// Your MongoDB query here
+In filter bar { "name": { "$regex": "ihop", "$options": "i" } }
+In project bar { "name": 1, "_id": 0 }
 ```
 
 ### Screenshot
