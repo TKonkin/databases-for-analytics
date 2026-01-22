@@ -1,8 +1,8 @@
 # Exercise 04: Advanced SQL, Jupyter, and Visualization
 
-- Name:
+- Name: Terry Konkin
 - Course: Database for Analytics
-- Module:
+- Module: 4
 - Database Used: World Database
 - Tools Used: PostgreSQL, SQLAlchemy, Pandas, Jupyter Notebooks
 
@@ -31,7 +31,16 @@ Considering the World database, write a SQL statement that will **display the na
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT 
+    country.name AS Country,
+    COUNT(*) AS NumberOfOfficialLanguages
+FROM country
+JOIN countrylanguage
+      ON country.code = countrylanguage.countrycode
+WHERE countrylanguage.isofficial = 'T'
+GROUP BY country.name
+HAVING COUNT(*) > 2
+ORDER BY NumberOfOfficialLanguages DESC;
 ```
 
 ### Screenshot
