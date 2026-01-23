@@ -17,6 +17,9 @@ dependencies = [
     # REQ.DEPS: External packages used by the project code.
     "datafun-toolkit>=0.9.4",
     "ipykernel>=7.1.0",
+    "matplotlib>=3.10.8",
+    "pandas>=3.0.0",
+    "psycopg[binary]>=3.3.2",
     "sqlalchemy>=2.0.46",
 ]
 

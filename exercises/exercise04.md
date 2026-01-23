@@ -58,7 +58,24 @@ After the `create_engine` command is executed, **what are the three statements r
 ### Python Code
 
 ```python
-# Your three Python statements here
+# First Statement
+conn = engine.connect()
+
+# Second Statement
+result = conn.execute(text("""SELECT 
+    country.name AS Country,
+    COUNT(*) AS NumberOfOfficialLanguages
+FROM country
+JOIN countrylanguage
+      ON country.code = countrylanguage.countrycode
+WHERE countrylanguage.isofficial = 'T'
+GROUP BY country.name
+HAVING COUNT(*) > 2
+ORDER BY NumberOfOfficialLanguages DESC;"""))
+
+# Third Statement
+pd.DataFrame(result.fetchall(), columns=result.keys())
+
 ```
 
 ### Screenshot
@@ -77,8 +94,36 @@ Using **Jupyter Notebooks**, write the Python code needed to produce the followi
 
 ### Python Code
 
-```python
-# Your Python code here
+```
+query = text("""
+    SELECT 
+        country.name AS name,
+        COUNT(*) AS num_of_languages
+    FROM country
+    JOIN countrylanguage
+      ON country.code = countrylanguage.countrycode
+    WHERE countrylanguage.isofficial = 'T'
+    GROUP BY country.name
+    HAVING COUNT(*) > 2
+    ORDER BY num_of_languages DESC;
+""")
+
+with engine.connect() as conn:
+    df = pd.DataFrame(conn.execute(query).fetchall(), columns=["name", "num_of_languages"])
+
+plt.style.use('seaborn-v0_8')
+fig, ax = plt.subplots(figsize=(10, 6))
+bars = ax.bar(df['name'], df['num_of_languages'], width=0.5, color='skyblue', label='num_of_languages')
+
+ax.set_xlabel('name', fontsize=12)
+ax.set_ylabel('num_of_languages', fontsize=12)
+ax.set_title('Number of Official Languages by Country', fontsize=14)
+ax.legend()
+
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
 ```
 
 ### Screenshot
