@@ -248,15 +248,15 @@ Using the World database, write the SQL command to **calculate the percentage of
 
 ```sql
 SELECT 
-    (COUNT(CASE 
-              WHEN District IS NULL 
-                OR TRIM(TRANSLATE(District, '–', '')) = ''
-                OR District = '–' 
-           THEN 1 
-          END) * 100.0 
-     / COUNT(*)
-    ) AS PercentageMissingDistrict
-FROM city;
+      (COUNT(CASE 
+            WHEN District IS NULL 
+            OR TRIM(District) LIKE '-%'
+    	      OR TRIM(District) LIKE '–%' 
+            THEN 1 
+            END) * 100.0 
+      / COUNT(*)
+      ) AS PercentageMissingDistrict
+      FROM city;
 ```
 
 ### Screenshot
