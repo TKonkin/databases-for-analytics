@@ -1,7 +1,7 @@
 # Module 6 - Exercise 1: Creating a Data Warehouse
 From the Operational Model to the Dimensional Model
 
-- Name:
+- Name: Terry Konkin
 - Course: Database for Analytics
 - Module: 6
 
@@ -107,7 +107,7 @@ Save your diagram image in this repo and embed it below.
 
 #### Diagram
 
-![Star Schema Diagram](star-schema.png)
+![Star Schema Diagram](screenshots/star-schema.jpg)
 
 ---
 
@@ -121,4 +121,20 @@ In 1-2 short paragraphs, explain:
 
 #### Design Notes
 
-_Write your design notes here._
+
+Overall, the dimensions were chosen as a combination of what was available in the operational model, and the requirements specified in the list of questions to be answered.  By extension, no dimesions were included that were not required to answer the support questions.
+
+The fact table grain is daily sales as that was the requirement specified in the assignment overview above.
+
+Q1 - How many of part number **ax12** were sold on **September 2, 1994**?
+
+A1 - Within the Part table, the part key and part number are available to perform the first query.  From the Date table, the date key for 09/02/1994 would be determined.  Then Daily Sales table is used to filter for both of those key values.  The resulting sales quantity value would be utilized for the answer to the question.
+
+Q2 - How many of part number **ax12** did customer **124** purchase last year?
+
+A2 - The query would utilize both the Parts table/part key for ax12 and Customer table/customer key for 124.  The DateDim table is used to filter all datekey rows with year = 2025.  Those datekeys, plus the 2 dimension keys are used to filter the DailySales table.  From that result, the rows in the sales quantity column are then aggregated.
+
+Q3 - How much did customer **124** spend last year?
+
+The Customer table can be used to identify the customerkey for custnumber 124.  The DateDim table is in the model to filter for rows with year = 2025.  Those two filters are then applied to the Daily Sales table.  For the resulting rows, the values in the salesamount column are aggregated to produce the answer.
+
