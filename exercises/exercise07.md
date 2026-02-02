@@ -3,12 +3,7 @@
 - Name: Terry Konkin
 - Course: Database for Analytics
 - Module: 7
-
 ---
-
-
----
-
 
 ### The initial data source
 
@@ -27,88 +22,98 @@ drivers:  12 cols, 150 rows
 trucks:   11 cols, 120 rows
 trips:    12 cols, 1,500 rows (note: source table = 57,000 rows)
 
+
 ### Show a data dictionary
 
 trucks	    table name
-truck_id	  unique for each truck
+truck_id	unique for each truck
 unit_number	oprational number
-make	      manufacturer name
+make	    manufacturer name
 model_year	year manufactured
 vin	        VIN number of vehicle
 acquisition_date	  date of vehickle purchase
-acquisition_mileage	mileage at time of purchase
+acquisition_mileage	    mileage at time of purchase
 fuel_type	            generally diesel
 tank_capacity_gallons	size of fuel tank
 status	              ctive/inactive/maintenance
 home_terminal	        city where unit is based
 
+drivers table name
+driver_id   unique for each driver
+fiest_name  driver name
+last_name   driver name
+hire_date   date that driver was hired
+termination_date    date that driver left company
+license_number  drivers license number
+license_state   us state of drivers license
+date_of_birth   birth date
+home terminal   US city
+employment_status   active/inactive/terminated
+cdl_class   class of srivers license
+years_experience    no. of years as commercial driver
+
+trips       table name
+trip_id     unique values
+load_id     unique values
+driver_id   driver associated with trip
+truck_-id   truck used for trip
+trailer_id  trailer used for trip
+dispatch_date       start date of trip
+actiual_distance    total miles travelled
+actual_duration_hours   time to undertake trip
+fuel_gallons_used       total fuel used for trip
+average _mpg            miles per gallon
+idle_time_hours time    that engine is running but truck not moving
+trip_status             whether trip has been completed
 
 
+### Describe some of the obstacles you overcame to transform the data.
+
+Creating the column data types was fairly straightforward, and accomplished with CREATE TABLE statement.  I initially received an error message from the COPY statement, as apparently the files could not be accessed by postgres when in my downloads folder.  This was resolved by moving the files to the postgres folder to copy, and then deleting them afterward (although probably not standard procedure). 
 
 
+### Show your table structure including data types
+
+Trucks table structure is below:
+
+![Trucks Table Structure](screenshots/trucks.png)
+
+Drivers table structure is below:
+
+![Drivers Table Structure](screenshots/drivers.png)
+
+Trips table structure is below:
+
+![Trips Table Structure](screenshots/trips.png)
 
 
+### Select * from each of your tables
+
+Trucks table output is below:
+
+![Trucks Table Output](screenshots/truckscols.png)
+
+Drivers table output is below:
+
+![Drivers Table Output](screenshots/driverscols.png)
+
+Trips table output is below:
+
+![Drivers Table Output](screenshots/tripscols.png)
 
 
-- One **fact table** (daily customer sales facts)
-- Appropriate **dimension tables** (you decide which ones are necessary)
+### Show some interesting queries from your tables.  Include:
 
-Your model must clearly show:
+### • At least one join
 
-- Fact table name and fields
-- Dimension table names and fields
-- Primary keys and foreign keys
-- Relationships (dimensions connect to the fact table)
+This query outputs all of the trips taken by a selected driver, including the miles driven for each of his trips.
 
----
+![Join Query](screenshots/join.png)
 
-## Deliverables
+### • At least one query where you group by and aggregate data
 
-### 1) Star Schema Diagram (Required)
+This query outputs all drivers, along with the total number of miles that each one has driven.
 
-Create and submit a **diagram** of your star schema.
+![Aggregation Query](screenshots/agg.png)
 
-You may use any tool, such as:
-- draw.io (diagrams.net)
-- PowerPoint
-- Google Drawings
-- Lucidchart
-- Hand-drawn on paper (then take a clear photo)
-
-Save your diagram image in this repo and embed it below.
-
-**File name suggestion:** `star-schema.png` or `star-schema.jpg`
-
-#### Diagram
-
-![Star Schema Diagram](screenshots/star-schema.jpg)
-
----
-
-### 2) Design Notes (Required)
-
-In 1-2 short paragraphs, explain:
-
-- What dimensions you chose and why
-- Why your fact table grain is daily sales
-- How your design supports at least 3 of the required analytics questions
-
-#### Design Notes
-
-
-Overall, the dimensions were chosen as a combination of what was available in the operational model, and the requirements specified in the list of questions to be answered.  By extension, no dimesions were included that were not required to answer the support questions.
-
-The fact table grain is daily sales as that was the requirement specified in the assignment overview above.
-
-Q1 - How many of part number **ax12** were sold on **September 2, 1994**?
-
-A1 - Within the Part table, the part key and part number are available to perform the first query.  From the Date table, the date key for 09/02/1994 would be determined.  Then Daily Sales table is used to filter for both of those key values.  The resulting sales quantity value would be utilized for the answer to the question.
-
-Q2 - How many of part number **ax12** did customer **124** purchase last year?
-
-A2 - The query would utilize both the Parts table/part key for ax12 and Customer table/customer key for 124.  The DateDim table is used to filter all datekey rows with year = 2025.  Those datekeys, plus the 2 dimension keys are used to filter the DailySales table.  From that result, the rows in the sales quantity column are then aggregated.
-
-Q3 - How much did customer **124** spend last year?
-
-The Customer table can be used to identify the customerkey for custnumber 124.  The DateDim table is in the model to filter for rows with year = 2025.  Those two filters are then applied to the Daily Sales table.  For the resulting rows, the values in the salesamount column are aggregated to produce the answer.
 
